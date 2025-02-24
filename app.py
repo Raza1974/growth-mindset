@@ -1,12 +1,17 @@
 import streamlit as st
 import random
+import time
 
 # Growth Mindset Quotes
 quotes = [
     "💡 Mistakes are proof that you are trying.",
     "🚀 Failure is simply the opportunity to begin again, this time more intelligently.",
     "🔥 Hard work beats talent when talent doesn’t work hard.",
-    "🌟 The only limit to our realization of tomorrow is our doubts of today."
+    "🌟 The only limit to our realization of tomorrow is our doubts of today.",
+    "🎯 Challenges are what make life interesting. Overcoming them is what makes life meaningful.",
+    "💪 Growth and comfort do not coexist.",
+    "🌱 Strive for progress, not perfection.",
+    "🔥 The only way to do great work is to love what you do."
 ]
 
 # Set Page Configuration
@@ -16,23 +21,34 @@ st.set_page_config(page_title="Growth Mindset Challenge", page_icon="🌱", layo
 st.markdown(
     """
     <style>
+        body {
+            background-color: #f5f7fa;
+        }
         .title {
-            font-size: 36px;
-            color: #1E88E5;
+            font-size: 42px;
+            background: -webkit-linear-gradient(left, #1E88E5, #388E3C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             font-weight: bold;
             text-align: center;
+            margin-bottom: 10px;
         }
         .subheader {
-            font-size: 20px;
+            font-size: 22px;
             color: #424242;
             text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
         .quote {
-            font-size: 18px;
+            font-size: 20px;
             font-style: italic;
             color: #388E3C;
             text-align: center;
-            margin-top: 10px;
+            margin: 15px 0;
+            background-color: #e8f5e9;
+            padding: 10px;
+            border-radius: 10px;
         }
         .footer {
             text-align: center;
@@ -58,32 +74,44 @@ st.markdown('<div class="title">🌱 Growth Mindset Challenge</div>', unsafe_all
 st.markdown('<div class="subheader">Every challenge is a step toward growth. Keep going! 🚀</div>', unsafe_allow_html=True)
 
 # Display Random Motivational Quote
-st.markdown(f'<div class="quote">"{random.choice(quotes)}"</div>', unsafe_allow_html=True)
+if "quote" not in st.session_state:
+    st.session_state.quote = random.choice(quotes)
 
-# User Challenge Input
+st.markdown(f'<div class="quote">"{st.session_state.quote}"</div>', unsafe_allow_html=True)
+
+if st.button("🔄 Get New Quote"):
+    st.session_state.quote = random.choice(quotes)
+    st.rerun()
+
+# User Inputs
+st.subheader("📝 Your Reflection")
 challenge = st.text_area("💭 What challenge did you face today?", placeholder="Describe your challenge...")
-
-# User Reflection Input
 lesson = st.text_area("📚 What did you learn from it?", placeholder="Share your lesson...")
 
+# Submit Button
 if st.button("✅ Submit Your Growth"):
     if challenge and lesson:
+        with st.spinner("Processing..."):
+            time.sleep(1.5)
         st.success("🎉 Great! You're embracing a growth mindset! Keep learning and evolving. 💡")
+
+        # Simulate progress in growth mindset
+        progress = st.progress(0)
+        for percent in range(1, 101):
+            time.sleep(0.02)
+            progress.progress(percent)
+
     else:
         st.warning("⚠️ Please fill in both fields before submitting.")
 
-# Footer with Profile & Projects
+# Footer with Projects
 st.markdown(
     """
     <div class="footer">
-        🔗 **My Projects:**  
-        - 🎨 <a href="https://portfolio-slide.vercel.app/" target="_blank">Portfolio Slide</a>  
-        - 📝 <a href="https://resume-builder-phi-mauve.vercel.app/" target="_blank">Resume Builder</a>  
-        - 📄 <a href="https://dynamic-resume-psi.vercel.app/" target="_blank">Dynamic Resume</a>  
-        - 🖩 <a href="https://screen-calculator.vercel.app/" target="_blank">Screen Calculator</a>  
-        - 💰 <a href="https://coin-market-cyan.vercel.app/" target="_blank">Coin Market</a>  
-        - 🍖 <a href="https://mart-meat.vercel.app/" target="_blank">Mart Meat</a>  
-    </div>
+         *Keep pushing your limits! Growth is a journey, not a destination.  
+         *Stay curious, embrace challenges, and celebrate progress.  
+         *Every small step you take leads to great success. Keep thriving! </div>
     """,
     unsafe_allow_html=True
 )
+
